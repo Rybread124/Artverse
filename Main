@@ -1,0 +1,160 @@
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { GalleryVerticalEnd, ShoppingCart, Upload, User, Filter } from "lucide-react";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+
+const digitalArt = [
+  {
+    id: 1,
+    title: "Neon Dreams",
+    artist: "Ava Solaris",
+    price: "$120",
+    image: "/art1.jpg",
+    genre: "Sci-fi",
+  },
+  {
+    id: 2,
+    title: "Cyber Samurai",
+    artist: "Kai Vortex",
+    price: "$200",
+    image: "/art2.jpg",
+    genre: "Cyberpunk",
+  },
+  {
+    id: 3,
+    title: "Starlit Ocean",
+    artist: "Nova Bleu",
+    price: "$90",
+    image: "/art3.jpg",
+    genre: "Fantasy",
+  },
+];
+
+const mockUser = {
+  name: "Jane Doe",
+  email: "jane@example.com",
+  avatar: "/avatar.jpg",
+  uploadedArt: [digitalArt[0], digitalArt[2]],
+  purchases: [digitalArt[1]]
+};
+
+export default function DigitalArtMarketplace() {
+  return (
+    <div className="min-h-screen bg-gray-950 text-white p-6">
+      <header className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold">Artverse</h1>
+        <div className="flex items-center gap-4">
+          <Input placeholder="Search art or artists..." className="w-64" />
+          <Button variant="outline"><Filter className="mr-2 h-4 w-4" />Filters</Button>
+          <Button variant="outline"><ShoppingCart className="mr-2 h-4 w-4" />Cart</Button>
+          <Button variant="outline"><User className="mr-2 h-4 w-4" />Login</Button>
+        </div>
+      </header>
+
+      <Tabs defaultValue="marketplace">
+        <TabsList className="mb-6">
+          <TabsTrigger value="marketplace"><GalleryVerticalEnd className="mr-2 h-4 w-4" />Marketplace</TabsTrigger>
+          <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4" />Upload Art</TabsTrigger>
+          <TabsTrigger value="profile"><User className="mr-2 h-4 w-4" />Profile</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="marketplace">
+          <div className="mb-4 flex gap-4 items-center">
+            <Select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="Sci-fi">Sci-fi</SelectItem>
+                <SelectItem value="Cyberpunk">Cyberpunk</SelectItem>
+                <SelectItem value="Fantasy">Fantasy</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Sort by Price" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low to High</SelectItem>
+                <SelectItem value="high">High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {digitalArt.map((art) => (
+              <Card key={art.id} className="bg-gray-800 border border-gray-700">
+                <img src={art.image} alt={art.title} className="rounded-t-xl w-full h-48 object-cover" />
+                <CardContent className="p-4">
+                  <h2 className="text-xl font-semibold">{art.title}</h2>
+                  <p className="text-gray-400">by {art.artist}</p>
+                  <p className="text-gray-500 text-sm">Genre: {art.genre}</p>
+                  <div className="mt-2 flex justify-between items-center">
+                    <span className="text-green-400 font-bold">{art.price}</span>
+                    <Button size="sm">Buy</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="upload">
+          <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 max-w-xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">Upload Your Art</h2>
+            <div className="space-y-4">
+              <Input placeholder="Title" />
+              <Input placeholder="Artist Name" />
+              <Input type="file" />
+              <Input placeholder="Genre" />
+              <Input placeholder="Price (e.g., $100)" />
+              <Button className="w-full">Submit</Button>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="profile">
+          <div className="max-w-3xl mx-auto bg-gray-900 border border-gray-700 rounded-xl p-6">
+            <div className="flex items-center gap-6 mb-6">
+              <img src={mockUser.avatar} alt="avatar" className="w-20 h-20 rounded-full border border-gray-600" />
+              <div>
+                <h2 className="text-2xl font-semibold">{mockUser.name}</h2>
+                <p className="text-gray-400">{mockUser.email}</p>
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Uploaded Art</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              {mockUser.uploadedArt.map((art) => (
+                <Card key={art.id} className="bg-gray-800 border border-gray-700">
+                  <img src={art.image} alt={art.title} className="rounded-t-xl w-full h-40 object-cover" />
+                  <CardContent className="p-4">
+                    <h4 className="text-lg font-semibold">{art.title}</h4>
+                    <p className="text-gray-400 text-sm">{art.genre}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Purchases</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {mockUser.purchases.map((art) => (
+                <Card key={art.id} className="bg-gray-800 border border-gray-700">
+                  <img src={art.image} alt={art.title} className="rounded-t-xl w-full h-40 object-cover" />
+                  <CardContent className="p-4">
+                    <h4 className="text-lg font-semibold">{art.title}</h4>
+                    <p className="text-gray-400 text-sm">by {art.artist}</p>
+                    <span className="text-green-400 font-bold">{art.price}</span>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
